@@ -9,7 +9,7 @@ class Apple(object):
     w = 500
 
     def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
-        self.start = start
+
         self.pos = start
         self.dirnx = 1
         self.dirny = 0
@@ -39,11 +39,12 @@ class Snake(object):
         self.dirny = 1
 
     def move(self):
+        pygame.init()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-
-            keys = pygame.key.get_prssed()
+            pygame.init()
+            keys = pygame.key.get_pressed()
 
             for key in keys:
                 if keys[pygame.K_LEFT]:
@@ -87,7 +88,7 @@ class Snake(object):
 
     def reset(self, pos):
         self.head = Apple(pos)
-        self.body = {}
+        self.body = []
         self.body.append(self.head)
         self.turns = {}
         self.dirnx = 0
@@ -116,7 +117,8 @@ class Snake(object):
             else:
                 c.draw(surface)
 
-def drawGrid(w, rows, surface):
+def draw_grid(w, rows, surface):
+
     size_between = w // rows
 
     x = 0
@@ -130,12 +132,17 @@ def drawGrid(w, rows, surface):
 
 
 def redraw_window(surface):
-    global rows, width, s, snack
+
+
     s.draw(surface)
+
+    surface.fill((0, 0, 0))
     snack.draw(surface)
-    surface.fill((0,0,0))
-    drawGrid(width, rows, surface)
+    draw_grid(width, rows, surface)
+
+
     pygame.display.update()
+
 
 def random_snack(rows, item):
 
@@ -166,8 +173,8 @@ def main():
     width=500
     rows = 20
     win = pygame.display.set_mode((width,width))
-    s = snake((255,0,0), (10,10))
-    snake = Apple(random_snack(rows, s), color = (0,255,0))
+    s = Snake((255,0,0), (10,10))
+    snack = Apple(random_snack(rows, s), color = (0,255,0))
 
     clock = pygame.time.Clock()
 
@@ -175,7 +182,7 @@ def main():
         pygame.time.delay(50)
         clock.tick(10)
         s.move()
-        if s.body[0].pos == Apple.pos:
+        if s.body[0].pos == snack.pos:
             s.add_cube()
             snack = Apple(random_snack(rows, s), color = (0,255,0))
 
@@ -188,6 +195,6 @@ def main():
 
         redraw_window(win)
 
-if __name__ == "__main__":
-    apple = Apple(object)
-    snake = Snake(object)
+
+
+main()
